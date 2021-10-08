@@ -7,7 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="XlsxCell.fs" />
+    <Compile Include="Change.fs" />
+    <Compile Include="CellifyDiff.fs" />
     <Compile Include="Program.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FSharpSpreadsheetML" Version="0.0.7"/>
+    <PackageReference Include="Spectre.Console" Version="0.41.1-preview.0.12"/>
   </ItemGroup>
 
 </Project>
