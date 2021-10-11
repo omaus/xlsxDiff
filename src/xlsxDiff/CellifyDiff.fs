@@ -57,12 +57,12 @@ let getCellMatrices doc =
 /// Transforms a sparse cell matrix into a dense matrix (2D array).
 let getDenseMatrix (cellMatrix : Dictionary<int * int, Cell>) =
     let emptyCell = {
-        Content     = Option<_>.None
-        TextFormat  = Option<_>.None
-        CellFormat  = Option<_>.None
-        Comment     = Option<_>.None
-        Note        = Option<_>.None
-        Formula     = Option<_>.None
+        Content     = None
+        TextFormat  = None
+        CellFormat  = None
+        Comment     = None
+        Note        = None
+        Formula     = None
     }
     let noOfRows = cellMatrix.Keys |> Seq.map fst |> Seq.max
     let noOfCols = cellMatrix.Keys |> Seq.map snd |> Seq.max
@@ -102,8 +102,8 @@ let parse infile1 infile2 =
     |> Seq.iteri (fun i sn ->                    
         match (Array.contains sn sheetNames1, Array.contains sn sheetNames2) with
         | (true,true) ->
-            let sheet1 = Array.pick (fun t -> if fst t = sn then Some (snd t) else Option.None) cellMatrices1
-            let sheet2 = Array.pick (fun t -> if fst t = sn then Some (snd t) else Option.None) cellMatrices2
+            let sheet1 = Array.pick (fun t -> if fst t = sn then Some (snd t) else None) cellMatrices1
+            let sheet2 = Array.pick (fun t -> if fst t = sn then Some (snd t) else None) cellMatrices2
             let tit = TableTitle(string sn)
             let chm = getChangeMatrix sheet1 sheet2
             let dm =
@@ -129,14 +129,14 @@ let parse infile1 infile2 =
                         | No  -> 
                             match (snd v.CellInformation).Content with
                             | Some a -> escapeForSquareBrackets a
-                            | Option.None -> ""
+                            | None -> ""
                 )
                 |> addOuterFrame
             addMatrixToTable dm spectreTables.[i]
             spectreTables.[i].Title <- tit
         | (false,true) ->
             let tit = TableTitle(sprintf "%s -- HAS BEEN ADDED" sn)
-            let sheet2 = Array.pick (fun t -> if fst t = sn then Some (snd t) else Option.None) cellMatrices2
+            let sheet2 = Array.pick (fun t -> if fst t = sn then Some (snd t) else None) cellMatrices2
             spectreTables.[i].Title <- tit
             let dm = 
                 getDenseMatrix sheet2 
@@ -145,7 +145,7 @@ let parse infile1 infile2 =
             addMatrixToTable dm spectreTables.[i]
         | (_,false) -> 
             let tit = TableTitle(sprintf "%s -- HAS BEEN DELETED" sn)
-            let sheet1 = Array.pick (fun t -> if fst t = sn then Some (snd t) else Option.None) cellMatrices1
+            let sheet1 = Array.pick (fun t -> if fst t = sn then Some (snd t) else None) cellMatrices1
             spectreTables.[i].Title <- tit
             let dm = 
                 getDenseMatrix sheet1 

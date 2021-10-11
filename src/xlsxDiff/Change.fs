@@ -73,12 +73,12 @@ let getCellChange (cell1 : Cell) (cell2 : Cell) =
 /// Takes two Cell matrices (sparse value dictionaries) and returns a 2D array of CellChanges. The row and column index of the 2D array match the row and column index of the matrices (but are zero-based instead of one-based).
 let getChangeMatrix (cellMatrix1 : Dictionary<int * int, Cell>) (cellMatrix2 : Dictionary<int * int, Cell>) =
     let emptyCell = {
-        Content     = Option<_>.None
-        TextFormat  = Option<_>.None
-        CellFormat  = Option<_>.None
-        Comment     = Option<_>.None
-        Note        = Option<_>.None
-        Formula     = Option<_>.None
+        Content     = None
+        TextFormat  = None
+        CellFormat  = None
+        Comment     = None
+        Note        = None
+        Formula     = None
     }
     let keys = Seq.append cellMatrix1.Keys cellMatrix2.Keys
     let noOfRows = keys |> Seq.map fst |> Seq.max
