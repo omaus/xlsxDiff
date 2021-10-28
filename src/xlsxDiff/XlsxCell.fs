@@ -86,7 +86,7 @@ type Number = {
 
 /// The currency symbol used.
 type CurrencySymbol =
-| None
+| NoCurrencySymbol
 | Euro
 | Dollar
 /// All currently not implemented CurrencySymbols.
@@ -284,11 +284,11 @@ let getCell rowI colI sst sheetData =
     let content = SheetData.tryGetCellValueAt sst rowI colI sheetData
     {
         Content     = content
-        TextFormat  = Option<_>.None
-        CellFormat  = Option<_>.None
-        Comment     = Option<_>.None
-        Note        = Option<_>.None
-        Formula     = Option<_>.None
+        TextFormat  = None
+        CellFormat  = None
+        Comment     = None
+        Note        = None
+        Formula     = None
     }
 
 /// Creates a sparse Cell matrix from a SharedStringTable and the SheetData. Values are stored sparsely in a dictionary, with the key being a column index and row index tuple.
