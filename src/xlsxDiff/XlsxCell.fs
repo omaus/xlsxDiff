@@ -262,7 +262,7 @@ type Comment = {
 
 // Position (or/also: Reference) is provided via key in tuble or dictionary representation
 /// The model representation of an Xlsx cell.
-type Cell = {
+type XlsxCell = {
     /// The written content of a cell.
     Content     : string option
     /// The formatting of the text content of a cell.
