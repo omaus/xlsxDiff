@@ -13,12 +13,12 @@ type Color = {
 
 /// The type of format of a text.
 type TextFormatType =
-| Bold
-| Italic
-| Underlined
-| Size
-| Color of Color
-| Font
+    | Bold
+    | Italic
+    | Underlined
+    | Size
+    | Color of Color
+    | Font
 
 /// The format of a text.
 type TextFormat = {
@@ -30,20 +30,20 @@ type TextFormat = {
 
 /// The type of a line in a frame.
 type LineType =
-| No
-| Line
-| LineThick
-| LineThickPlus
-| LineDoubled
-| Dotted
-| DashedSmall
-| DashedLong
-| DashedThick
-| LongSmallAlternatingDashed
-| LongSmallAlternatingDashedThick
-| LongSmallSmallAlternatingDashed
-| LongSmallSmallAlternatingDashedThick
-| LongSmallAlternatingCutDashedThick
+    | No
+    | Line
+    | LineThick
+    | LineThickPlus
+    | LineDoubled
+    | Dotted
+    | DashedSmall
+    | DashedLong
+    | DashedThick
+    | LongSmallAlternatingDashed
+    | LongSmallAlternatingDashedThick
+    | LongSmallSmallAlternatingDashed
+    | LongSmallSmallAlternatingDashedThick
+    | LongSmallAlternatingCutDashedThick
 
 /// The line in a frame.
 type FrameLine = {
@@ -65,14 +65,14 @@ type Frame = {
 
 /// The depiction of negative numbers.
 type NegativeNumbers =
-/// Only a minus before a negative number.
-| MinusBlack
-/// No minus but a red color of a negative number.
-| Red
-/// A minus before a negative number and a black space after it.
-| MinusBlackSpace
-/// A minus before a negative number, number is in red color, and there is a black space after it.
-| MinusRedSpace
+    /// Only a minus before a negative number.
+    | MinusBlack
+    /// No minus but a red color of a negative number.
+    | Red
+    /// A minus before a negative number and a black space after it.
+    | MinusBlackSpace
+    /// A minus before a negative number, number is in red color, and there is a black space after it.
+    | MinusRedSpace
 
 /// The number cell category.
 type Number = {
@@ -86,11 +86,11 @@ type Number = {
 
 /// The currency symbol used.
 type CurrencySymbol =
-| NoCurrencySymbol
-| Euro
-| Dollar
-/// All currently not implemented CurrencySymbols.
-| Other of string
+    | NoCurrencySymbol
+    | Euro
+    | Dollar
+    /// All currently not implemented CurrencySymbols.
+    | Other of string
 
 /// The currency cell category.
 type Currency = {
@@ -112,15 +112,15 @@ type Accounting = {
 
 /// The depiction type of date cell category.
 type Date =
-| German1
-/// All currently not implemented types of Date.
-| Other of string
+    | German1
+    /// All currently not implemented types of Date.
+    | Other of string
 
 /// The depiction type of time cell category.
 type Time =
-| German1
-/// All currently not implemented types of Time.
-| Other of string
+    | German1
+    /// All currently not implemented types of Time.
+    | Other of string
 
 /// The depiction of percent cell category.
 type Percent = {
@@ -130,15 +130,15 @@ type Percent = {
 
 /// The depiction type of fraction cell category.
 type Fraction =
-| Monadic
-| Binary
-| ThreeDigit
-| Halves
-| Quarters
-| Eighth
-| Sixteenth
-| Tenth
-| Hundredth
+    | Monadic
+    | Binary
+    | ThreeDigit
+    | Halves
+    | Quarters
+    | Eighth
+    | Sixteenth
+    | Tenth
+    | Hundredth
 
 /// The depiction of scientific cell category.
 type Scientific = {
@@ -148,57 +148,57 @@ type Scientific = {
 
 /// The depiction type of special format cell category.
 type SpecialFormat =
-| PostcodeGermanStandard
-/// All currently not implemented types of SpecialFormat.
-| Other of string
+    | PostcodeGermanStandard
+    /// All currently not implemented types of SpecialFormat.
+    | Other of string
 
 /// The depiction type of user-specific cell category.
 type UserSpecific =
-| Standard
-/// All currently not implemented suggestion types of UserSpecific.
-| Other of string
-/// Custom user-specific depiction.
-| Custom of string
+    | Standard
+    /// All currently not implemented suggestion types of UserSpecific.
+    | Other of string
+    /// Custom user-specific depiction.
+    | Custom of string
 
 /// The category a cell is assigned to.
 type CellCategory =
-| Standard
-| Number of Number
-| Currency of Currency
-| Accounting of Accounting
-| Date of Date
-| Time of Time
-| Percent of Percent
-| Fraction of Fraction
-| Scientific of Scientific
-| Text
-| SpecialFormat of SpecialFormat
-| UserSpecific of UserSpecific
+    | Standard
+    | Number of Number
+    | Currency of Currency
+    | Accounting of Accounting
+    | Date of Date
+    | Time of Time
+    | Percent of Percent
+    | Fraction of Fraction
+    | Scientific of Scientific
+    | Text
+    | SpecialFormat of SpecialFormat
+    | UserSpecific of UserSpecific
 
 /// The horizontal alignment format for text.
 type HorizontalTextAlignment =
-| Standard
-| Left
-| Centered
-| Right
-| FillOut
-| Blocktext
-| CenteredOverSelection
-| Distributed
+    | Standard
+    | Left
+    | Centered
+    | Right
+    | FillOut
+    | Blocktext
+    | CenteredOverSelection
+    | Distributed
 
 /// The vertical alignment format for text.
 type VerticalTextAlignment =
-| Top
-| Centered
-| Bottom
-| Blocktext
-| Distributed
+    | Top
+    | Centered
+    | Bottom
+    | Blocktext
+    | Distributed
 
 /// The direction in which the text is built up.
 type TextDirection =
-| Context
-| FromLeftToRight
-| FromRightToLeft
+    | Context
+    | FromLeftToRight
+    | FromRightToLeft
 
 /// The orientation of text in a cell.
 type CellOrientation = {
@@ -294,7 +294,7 @@ let getCell rowI colI sst sheetData =
 /// Creates a sparse Cell matrix from a SharedStringTable and the SheetData. Values are stored sparsely in a dictionary, with the key being a column index and row index tuple.
 let getCellMatrix sst sheetData =
     let sm = SheetData.toSparseValueMatrix sst sheetData
-    let dict = Dictionary<int * int, Cell>()
+    let dict = Dictionary<int * int, XlsxCell>()
     for k in sm do 
         let rowI = fst k.Key |> uint
         let colI = snd k.Key |> uint
