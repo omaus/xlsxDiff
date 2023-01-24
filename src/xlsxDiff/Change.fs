@@ -30,17 +30,17 @@ type ChangeSite =
 | Formula
 
 type CellChange = {
-    CellInformation : Cell * Cell
+    CellInformation : XlsxCell * XlsxCell
     Changes         : seq<ChangeSite * ChangeType>
-    }
+}
 
 
 
 /// Takes two cells and compares if they differ.
-let hasChange (cell1 : Cell) cell2 = cell1 <> cell2
+let hasChange (cell1 : XlsxCell) cell2 = cell1 <> cell2
 
 /// Takes two cells and gets the changes between them.
-let getCellChange (cell1 : Cell) (cell2 : Cell) =
+let getCellChange (cell1 : XlsxCell) (cell2 : XlsxCell) =
     let getChangeType (cell1field : 'a option) (cell2field : 'a option) =
         match (cell1field,cell2field) with
         | (c1,c2) when c1.IsNone && c2.IsSome                       -> Add
@@ -71,7 +71,7 @@ let getCellChange (cell1 : Cell) (cell2 : Cell) =
     }
 
 /// Takes two Cell matrices (sparse value dictionaries) and returns a 2D array of CellChanges. The row and column index of the 2D array match the row and column index of the matrices (but are zero-based instead of one-based).
-let getChangeMatrix (cellMatrix1 : Dictionary<int * int, Cell>) (cellMatrix2 : Dictionary<int * int, Cell>) =
+let getChangeMatrix (cellMatrix1 : Dictionary<int * int, XlsxCell>) (cellMatrix2 : Dictionary<int * int, XlsxCell>) =
     let emptyCell = {
         Content     = None
         TextFormat  = None

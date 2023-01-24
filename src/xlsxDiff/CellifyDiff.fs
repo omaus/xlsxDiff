@@ -55,7 +55,7 @@ let getCellMatrices doc =
     )
 
 /// Transforms a sparse cell matrix into a dense matrix (2D array).
-let getDenseMatrix (cellMatrix : Dictionary<int * int, Cell>) =
+let getDenseMatrix (cellMatrix : Dictionary<int * int, XlsxCell>) =
     let emptyCell = {
         Content     = None
         TextFormat  = None
