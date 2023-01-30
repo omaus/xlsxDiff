@@ -11,19 +11,22 @@ type Settings() =
 
     inherit CommandSettings()
 
-    let mutable searchPath : string option = None
-    let mutable searchPattern : string option = None
-    let mutable includeHidden : bool = true
+    let mutable directMode = false
+    let mutable oldXlsxPath : string option = None
+    let mutable newXlsxPath : string option = None
 
-    [<CommandArgument(0, "[searchPath]")>]
-    member this.SearchPath with get() = searchPath
-    [<Description("Path to search. Defaults to current directory.")>]
-    member this.SearchPath with set(value) = searchPath <- value
+    [<CommandArgument(0, "[old XLSX]")>]
+    [<Description("Path to the old XLSX file.")>]
+    member this.OldXlsxPath with get() = oldXlsxPath
+    member this.OldXlsxPath with set(value) = oldXlsxPath <- value
+    [<CommandArgument(1, "[new XLSX]")>]
+    [<Description("Path to the new XLSX file.")>]
+    member this.NewXlsxPath with get() = newXlsxPath
+    member this.NewXlsxPath with set(value) = newXlsxPath <- value
     [<CommandOption("-p|--pattern")>]
     member this.SearchPattern with get() = searchPattern
     member this.SearchPattern with set(value) = searchPattern <- value
     [<CommandOption("--hidden")>]
-    // [<DefaultValue(Some true)>] // does not work here
     member this.IncludeHidden with get() = includeHidden
     member this.IncludeHidden with set(value) = includeHidden <- value
 
