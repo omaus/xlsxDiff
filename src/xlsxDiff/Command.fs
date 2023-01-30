@@ -4,16 +4,45 @@ open Spectre.Console
 open Spectre.Console.Cli
 open System.IO
 open System.ComponentModel
+open FSharpAux
+
+/// Checks whether a given file is an XLSX file.
+let isXlsx path = (FileInfo path).Extension = ".xlsx"
+
+/// Prints a message to the console that the given path corresponds to no XLSX file.
+let printNotSatisfying path = printfn $"Path to an inproper file given. {path} is no XLSX file"
+
+type FileAge =
+    | Old
+    | New
+
+let matchFa fileAge =
+    match fileAge with
+    | Old -> "old"
+    | New -> "new"
+
+/// Asks the user to give the path to the an old or new (depending on fileAge) XLSX file to compare.
+let rec getPath fileAge =
+    let fa = matchFa fileAge
+    printfn $"Please give the path to the {fa} XLSX file:"
+    let input = 
+        System.Console.ReadLine()
+        |> String.replace "\"" ""
+    if isXlsx input |> not then
+        printNotSatisfying input
+        getPath fileAge
+    else input
 
 
 type Settings() =
 
-
     inherit CommandSettings()
 
-    let mutable directMode = false
-    let mutable oldXlsxPath : string option = None
-    let mutable newXlsxPath : string option = None
+    // multiple option types as CommandArguments do not work due to "Error: TypeConverter cannot convert from System.String."
+    //let mutable oldXlsxPath : string option = None 
+    //let mutable newXlsxPath : string option = None
+    let mutable oldXlsxPath = ""
+    let mutable newXlsxPath = ""
 
     [<CommandArgument(0, "[old XLSX]")>]
     [<Description("Path to the old XLSX file.")>]
@@ -23,35 +52,41 @@ type Settings() =
     [<Description("Path to the new XLSX file.")>]
     member this.NewXlsxPath with get() = newXlsxPath
     member this.NewXlsxPath with set(value) = newXlsxPath <- value
-    [<CommandOption("-p|--pattern")>]
-    member this.SearchPattern with get() = searchPattern
-    member this.SearchPattern with set(value) = searchPattern <- value
-    [<CommandOption("--hidden")>]
-    member this.IncludeHidden with get() = includeHidden
-    member this.IncludeHidden with set(value) = includeHidden <- value
+
+
+/// Takes a FileAge and a Settings and returns the path the the approbriate XLSX file.
+let returnPath fileAge (settings : Settings) =
+    let settingsFile = 
+        match fileAge with
+        | Old -> settings.OldXlsxPath
+        | New -> settings.NewXlsxPath
+    // multiple option types as CommandArguments do not work due to "Error: TypeConverter cannot convert from System.String."
+    //let input = Option.defaultValue (getPath fileAge) settingsFile
+    let input =
+        match settingsFile with
+        | ""    -> getPath fileAge
+        | _     -> settingsFile
+    if isXlsx input |> not then
+        printNotSatisfying input
+        getPath fileAge
+    else input
+
 
 type FileSizeCommand() =
 
     inherit Command<Settings>()
 
     override this.Execute (context : CommandContext, settings : Settings) =
-        let searchOptions = new EnumerationOptions()
-        searchOptions.AttributesToSkip <- 
-            if settings.IncludeHidden then 
-                FileAttributes.Hidden ||| FileAttributes.System
-            else
-                FileAttributes.System
 
-        let searchPattern = Option.defaultValue "*.*" settings.SearchPattern
-        let searchPath = Option.defaultValue (Directory.GetCurrentDirectory()) settings.SearchPath
-        let files = DirectoryInfo(searchPath).GetFiles(searchPattern, searchOptions)
+        let oxp = returnPath Old settings
+        let nxp = returnPath New settings
 
-        let totalFileSize = files |> Seq.sumBy (fun fileInfo -> fileInfo.Length)
+        CellifyDiff.parse oxp nxp
 
-        AnsiConsole.MarkupLine(sprintf "Total file size for [green]%s[/] files in [green]%s[/]: [blue]%i[/] bytes" searchPattern searchPath totalFileSize)
         0
 
 let app = CommandApp<FileSizeCommand>()
+
 
 //[<AbstractClass; Sealed>]
 //type FileSizeCommandSettings =
