@@ -20,8 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FSharpSpreadsheetML" Version="0.0.7" />
-    <PackageReference Include="Spectre.Console" Version="0.41.1-preview.0.12" />
+    <PackageReference Include="FSharpAux" Version="1.1.0" />
+    <PackageReference Include="FSharpSpreadsheetML" Version="0.0.8" />
+    <PackageReference Include="Spectre.Console" Version="0.46.0" />
+    <PackageReference Include="Spectre.Console.Cli" Version="0.46.0" />
   </ItemGroup>
 
 </Project>
